@@ -139,6 +139,9 @@ REST_FRAMEWORK = {
 JWT_PRIVATE_KEY = env("JWT_PRIVATE_KEY", default="").replace("\\n", "\n")
 JWT_PUBLIC_KEY = env("JWT_PUBLIC_KEY", default="").replace("\\n", "\n")
 JWT_ISSUER = env("JWT_ISSUER", default="healthkey-phr")
+# PRomop PhrTokenProvider fail-closes unless the token `aud` matches PHR_AUDIENCE
+# (default `promop-api` when PRomop DEBUG=True). SimpleJWT omits `aud` unless set.
+JWT_AUDIENCE = env("JWT_AUDIENCE", default="promop-api")
 
 if JWT_PRIVATE_KEY:
     _JWT_ALGORITHM = "RS256"
@@ -158,6 +161,7 @@ SIMPLE_JWT = {
     "SIGNING_KEY": _JWT_SIGNING_KEY,
     "VERIFYING_KEY": _JWT_VERIFYING_KEY,
     "ISSUER": JWT_ISSUER,
+    "AUDIENCE": JWT_AUDIENCE,
     "AUTH_HEADER_TYPES": ("Bearer",),
     "USER_ID_FIELD": "id",
     "USER_ID_CLAIM": "user_id",

@@ -109,6 +109,9 @@ class IntrospectView(APIView):
                 "claims": token.get("claims", user.claims),
                 "exp": token["exp"],
                 "iss": token.get("iss"),
+                "aud": token.get("aud"),
+                "sub": str(user.id),
+                "token_type": token.get("token_type", "access"),
             }
         )
 

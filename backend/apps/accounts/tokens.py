@@ -16,6 +16,11 @@ def set_shared_claims(token, user):
     token["email"] = user.email
     token["identity_level"] = user.identity_level
     token["claims"] = user.claims
+    # SimpleJWT 5.3 copies ISSUER into `iss` but omits `aud` unless the claim
+    # is set explicitly. PRomop PhrTokenProvider fail-closes without it.
+    # GitHub `dev` still lacks this line — Render will keep issuing tokens
+    # without `aud` until this file is pushed.
+    token["aud"] = getattr(settings, "JWT_AUDIENCE", "") or "promop-api"
 
 
 def tokens_for_user(user):
