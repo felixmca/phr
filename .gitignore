@@ -32,3 +32,10 @@ Thumbs.db
 # Build
 *.log
 .gstack/
+
+# Signing keys - never commit
+backend/*.pem
+
+# Vercel CLI link state (machine-local orgId/projectId)
+.vercel/
+frontend/.vercel/
