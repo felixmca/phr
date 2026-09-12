@@ -169,6 +169,7 @@ SIMPLE_JWT = {
 }
 
 CORS_ALLOWED_ORIGINS = env("CORS_ALLOWED_ORIGINS")
+CORS_ALLOWED_ORIGIN_REGEXES = [r"^https://[a-z0-9-]+\.vercel\.app$"]
 CORS_ALLOW_CREDENTIALS = True
 
 ADMIN_URL_PATH = env("ADMIN_URL_PATH", default="admin/")

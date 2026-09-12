@@ -48,6 +48,16 @@ function useServiceApi(baseURL: string) {
   }, [baseURL]);
 }
 
+function productionSiblingUrl(envValue: string | undefined, live: string, local: string) {
+  const onVercel =
+    typeof window !== "undefined" && /\.vercel\.app$/i.test(window.location.hostname);
+  if (onVercel && (!envValue || /localhost|127\.0\.0\.1/i.test(envValue))) {
+    return live;
+  }
+  if (envValue) return envValue;
+  return local;
+}
+
 /** hk-labs — verifies phr-issued JWTs against the phr accounts DB
  * (via /api/v1/auth/jwks/ or /api/v1/auth/introspect/). */
 export function useLabsApi() {
@@ -58,7 +68,13 @@ export function useLabsApi() {
  * via its PhrTokenProvider. Base ends at the API root; the PatientInfo
  * remote appends "/patient-info/me/". */
 export function usePromopApi() {
-  return useServiceApi(import.meta.env.VITE_PROMOP_API_URL || "http://localhost:9200/api");
+  return useServiceApi(
+    productionSiblingUrl(
+      import.meta.env.VITE_PROMOP_API_URL,
+      "https://phrame-promop-api.onrender.com/api",
+      "http://localhost:9200/api",
+    ),
+  );
 }
 
 /** soc — treatment recommendations (Find Treatments). Verifies phr-issued
@@ -76,7 +92,13 @@ export function useSocApi() {
  * router at the service root — unlike soc's remote, which builds its own
  * /api/v1 prefix from an apiBasePath prop. */
 export function useExactApi() {
-  return useServiceApi(import.meta.env.VITE_EXACT_API_URL || "http://localhost:9400");
+  return useServiceApi(
+    productionSiblingUrl(
+      import.meta.env.VITE_EXACT_API_URL,
+      "https://phrame-exact-api.onrender.com",
+      "http://localhost:9400",
+    ),
+  );
 }
 
 /** promop's /patient-info/me/ auto-provisions the Person for a first-time

@@ -53,32 +53,20 @@ const navGroups: NavGroup[] = [
       // bounces users to /dashboard.
       { label: "Health Profile", to: "/patient/record", icon: UserCircle },
       { label: "Connect Records", to: "/connect/records", icon: FileHeart, disabled: true },
-      // Uploads come from hk-labs' remote — enabled only where that remote
-      // is configured (VITE_LABS_REMOTE_URL), so production stays "Coming
-      // soon" until hk-labs is deployed.
       {
         label: "Upload Lab Reports",
         to: "/labs/uploads",
         icon: Upload,
-        disabled: !import.meta.env.VITE_LABS_REMOTE_URL,
+        disabled: true,
       },
-      // Lab Results is served by promop's remote (OMOP measurements).
       { label: "Lab Results", to: "/labs/results", icon: TestTubes },
-      // soc's remote; enabled wherever it is configured, same rule as uploads.
       {
         label: "Find Treatments",
         to: "/treatments",
         icon: Search,
-        disabled: !import.meta.env.VITE_SOC_REMOTE_URL,
+        disabled: true,
       },
-      // EXACT's remote; enabled wherever it is configured, same rule as the
-      // other federated items.
-      {
-        label: "Find Trials",
-        to: "/trials",
-        icon: Microscope,
-        disabled: !import.meta.env.VITE_EXACT_REMOTE_URL,
-      },
+      { label: "Find Trials", to: "/trials", icon: Microscope },
     ],
   },
   {
@@ -86,7 +74,7 @@ const navGroups: NavGroup[] = [
     // group rather than another entry under My Health.
     label: "For researchers",
     items: [
-      { label: "Analytics", href: "https://analytics.healthkey.ai", icon: BarChart3 },
+      { label: "Analytics", href: "https://phrame-prism-ui.vercel.app", icon: BarChart3 },
     ],
   },
 ];

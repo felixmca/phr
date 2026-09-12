@@ -40,7 +40,14 @@ export async function refreshAccessToken(): Promise<string> {
 }
 
 api.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    const ct = String(response.headers["content-type"] || "");
+    const data = response.data;
+    if (ct.includes("text/html") || (typeof data === "string" && /^\s*</.test(data))) {
+      return Promise.reject(new Error("API returned HTML instead of JSON"));
+    }
+    return response;
+  },
   async (error) => {
     if (error.response?.status === 401 && !error.config._retry && authStore.getRefreshToken()) {
       error.config._retry = true;

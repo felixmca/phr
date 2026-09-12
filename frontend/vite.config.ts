@@ -174,7 +174,8 @@ export default defineConfig(({ mode }) => {
     },
     server: {
       host: "localhost",
-      port: 5173,
+      // PRism keeps Vite :5173 on this machine; phr host uses :5174.
+      port: Number(env.VITE_DEV_PORT || 5174),
       proxy: {
         "/api": {
           target: apiProxyTarget,
